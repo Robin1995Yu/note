@@ -95,3 +95,72 @@
 *                       *
 *************************
 ```
+- 冲突的解决
+  - 保留需要的内容然后再次提交即可
+## 分支管理策略
+- Fast forward
+  - 速度较快
+  - 在删除分支之后 会丢失分支信息
+  - 在冲突的时候无法使用这种模式
+- git --no--ff <分支名> 禁用Fast forward提交
+  - 通过新建一个commit提交分支
+  - 需要和commit时一样的参数
+- 分支策略
+  - 主分支 master
+    - 稳定版本 不在这个上面开发
+  - 开发分支 dev
+    - 来自与master分支 在这个上面开发
+  - 个人分支
+    - 每个人自己从dev上新建一个线程 将自己开发好的合并到dev分支
+  - 在dev分支稳定后（通过测试）将它合并到master分支上完成发布
+## BUG分支
+- 命名规则 issue-bugname
+  - 在完成bug修改后将它合并到它分出来到分支上
+  - 删除
+- 保存现场
+  - git stash 保存现场
+  - 可以切换分支完成别的工作
+  - git stash list 显示保存的现场列表
+  - git stash apply 恢复现场
+  - git stash drop 删除现场
+  - git stash pop 恢复现场并删除
+  - 后三个命令可以指明是哪个现场
+- 将一次提交作用在当前分支
+  - git cherry-pich <commit id>
+## Feature分支
+- 命名规则 feature-model_name
+- 为了不在开发新功能到时候的代码污染主分支而产生的分支
+- 过程
+  - 从开发分支上新建feature分支
+  - 在feature分支上开发
+  - 选择是否和开发分支合并
+    - 合并 通过合并命令合并
+    - 不合并 通过git branch -D feature强制删除这个分支
+## 多人合作
+- 远程仓库
+  - 默认名为origin
+  - 把本地的master分支和远程仓库的master分支对应起来
+  - 通过git remote查看当前关联的远程仓库
+    - 加上-v参数显示详细信息
+  - 推送到远程仓库实际上是把本地的分支推送到对应的远程仓库
+    - git push <仓库名> <分支名>
+  - 分支是否需要推送
+    - master 需要时刻和远程同步
+    - dev 所有成员都在这个分支上工作 需要时刻同步
+    - BUG分支 用于本地修复bug 不需要推送到远程仓库
+    - feature分支 取决与是否有同事一起开发这个功能
+- 抓取分支
+  - git clone <ssh path>
+    - 从仓库克隆
+    - 默认只能看到master分支
+  - git checkout -b dev orgin/dev
+  - git switch -c dev orgin/dev
+    - 将云端的分支克隆到本地新创建到分支
+- 提交分支
+  - git push 将分支提交到对应的远程仓库
+  - 如果分支提交到远程仓库出现冲突
+    1. 将分支抓取下来 通过git pull将远程仓库对应的分支抓取
+    2. 处理冲突
+    3. 重新将分支提交
+    - 如果提示git pull时提示当前分支没有和远程分支建立链接关系
+      - git branch --set-upstream-to <branch-name> origin/<branch-name>
