@@ -1,2 +1,28 @@
 # note
-学习笔记
+- Java基础
+  - 完成
+- Java集合
+  - 完成
+- Java 并发 && 多线程
+  - 完成
+- git
+  - 完成
+- JVM
+  - 进行中
+- Elasticsearch
+- OS
+- dubbo
+- 缓存 Redis
+- 消息队列
+- Linux
+- 算法
+- 系统设计
+- MyBatis
+- Spring
+- nginx
+- 分布式
+- 计算机网络
+- Netty Tomcat
+- SpringCloud
+- zookeeper
+- 数据库
