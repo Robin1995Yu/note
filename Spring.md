@@ -1,7 +1,22 @@
-Spring 相关
-
-    BeanFactory和 ApplicationContext有什么区别？
-    Spring IOC 的理解，其初始化过程
+# Spring 相关
+## BeanFactory和 ApplicationContext有什么区别？
+- BeanFactory和ApplicationContext是Spring的两大核心接口，都可以当做Spring的容器。其中ApplicationContext是BeanFactory的子接口。
+- BeanFactory
+  - Spring最底层的接口
+  - Bean定义
+  - 读取Bean配置的文档
+  - 管理Bean加载
+  - 实例化Bean
+  - 控制Bean的生命周期
+  - 维护Bean之间的依赖关系
+- ApplicationContext
+  - 继承了BeanFactory
+  - 继承MessageSorce支持国际化
+  - 同一资源文件的访问方式
+  - 提供监听器中注册bean事件
+  - 同时加载多个配置文件
+  - 
+## Spring IOC 的理解，其初始化过程
     Spring Bean 的生命周期
     Spring MVC 的工作原理？
     Spring 循环注入的原理？

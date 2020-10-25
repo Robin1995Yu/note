@@ -1,0 +1,31 @@
+# Spring 源码读书笔记
+- Spring模块
+  - Core Container 核心容器
+    - Core和Beans是框架的基础部分 提供了IoC和依赖注入的特征 基础概念是BeanFactory 它提供了Factory模式的经典实现来消除程序对单例的需要 运行从程序中分离依赖关系和配置
+    - Core
+      - 核心工具类 其他模块都要用到这个包中的类
+    - Beans
+      - 所有应用都要用到 提供IoC（控制反转）和DI（依赖注入）
+    - Context
+      - 基于Core和Beans 继承Beans模块 提供大量扩展
+      - ApplicationContext是Context模块的关键
+    - Expression Language
+      - 提供了强大的表达式语言
+  - Data Access/Integration
+    - JDBC
+      - JDBC的抽象层
+    - ORM
+      - 为别的框架提供一个交互层
+    - OXM
+      - Object/XML映射实现
+    - JMS
+      - Java Message Service
+      - 消息制造消费的特征
+    - Transaction
+      - 事务的实现
+  - Web
+    - 对于Web的实现以及对别的框架的支持
+  - AOP
+    - 面向切片编程的实现
+  - Test
+    - 对于测试模块的支持
