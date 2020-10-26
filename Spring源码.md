@@ -29,3 +29,13 @@
     - 面向切片编程的实现
   - Test
     - 对于测试模块的支持
+- BeanFactory
+  - Bean加载和获取的过程
+    - XMLBeanFactory 读取配置
+    - beanFactory.getBean获取bean
+  - 参与的类
+    - ConfigReader 读取及验证配置文件 放置在内存中
+    - ReflectionUtil 反射实例化类
+    - App完成整个逻辑的串联
+  - 核心类
+    - DefaultListableBeanFactory
