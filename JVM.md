@@ -131,124 +131,124 @@
             - ExtClassLoader
             - AppClassLoader
 - 主要方法
-    - - ClassLoader
-        - loadClass(String className)
-            - 在Java2之后不建议重写
-            - 通过调用loadClass(String, boolean)
-            - 逻辑
-                - 从缓存中查找是否有对应的Class对象
-                    - 存在 直接返回
-                    - 不存在 下一步
-                - 是否存在父加载器
-                    - 是 调用父加载器的loadClass方法
-                    - 否 调用bootstrap加载器加载
-                - 是否找到
-                    - 是 返回
-                    - 否 调用findClass
-        - findClass(String className)
-            - 在Java2后不建议重写loadClass方法 取而代之的是重写findClass方法
-            - 在loadClass方法如果父加载器没有加载 那么就会调用findClass来加载
-            - 这样可以保证自定义的ClassLoader也符合双亲委派机制
-            - 在ClassLoader中没有实现findClass的逻辑
-        - defineClass(byte[] b, int off, int len)
-            - 将byte子节流解析成JVM能识别的Class对象
-                - 在ClassLoader中已经实现了这个功能
-            - 字节流的来源很多 可以是文件 也可以是网络等
-            - 一般是配合findClass方法来使用
-            - 这个返回的Class并没有被解析
-        - resolveClass(Class c)
-            - 解析Class c
-    - SercureClassLoader
-        - 添加了关于源代码的位置与证书，对于class源码访问权限等的验证
-    - URLClassLoader
-        - 实现了ClassLoader中一些没有实现的方法的实现 如findClass
-        - 新增URLClassPath类协助取得字节码流的操作
-            - 通过传入构造器的参数URL[]判断路径是jar还是class文件
-            - 返回FileLoader或者JarLoader
-        - 如果不是什么十分复杂的功能 可以直接继承URLClassLoader
-    - ExtClassLoader AppClassLoader
-        - 是sun.misc.Lancher的内部类
-        - 都继承自URLClassLoader
-        - ExtClassLoader
-            - 没有重写父类的loadClass
-        - AppClassLoader
-            - 重写了父类的loadClass 但是最后还是调用了父加载器的loadClass方法
+  - ClassLoader
+    - loadClass(String className)
+      - 在Java2之后不建议重写
+      - 通过调用loadClass(String, boolean)
+      - 逻辑
+        - 从缓存中查找是否有对应的Class对象
+          - 存在 直接返回
+          - 不存在 下一步
+        - 是否存在父加载器
+          - 是 调用父加载器的loadClass方法
+          - 否 调用bootstrap加载器加载
+        - 是否找到
+          - 是 返回
+          - 否 调用findClass
+      - findClass(String className)
+        - 在Java2后不建议重写loadClass方法 取而代之的是重写findClass方法
+        - 在loadClass方法如果父加载器没有加载 那么就会调用findClass来加载
+        - 这样可以保证自定义的ClassLoader也符合双亲委派机制
+        - 在ClassLoader中没有实现findClass的逻辑
+      - defineClass(byte[] b, int off, int len)
+        - 将byte子节流解析成JVM能识别的Class对象
+          - 在ClassLoader中已经实现了这个功能
+        - 字节流的来源很多 可以是文件 也可以是网络等
+        - 一般是配合findClass方法来使用
+        - 这个返回的Class并没有被解析
+      - resolveClass(Class c)
+        - 解析Class c
+  - SercureClassLoader
+    - 添加了关于源代码的位置与证书，对于class源码访问权限等的验证
+  - URLClassLoader
+    - 实现了ClassLoader中一些没有实现的方法的实现 如findClass
+    - 新增URLClassPath类协助取得字节码流的操作
+      - 通过传入构造器的参数URL[]判断路径是jar还是class文件
+      - 返回FileLoader或者JarLoader
+    - 如果不是什么十分复杂的功能 可以直接继承URLClassLoader
+  - ExtClassLoader AppClassLoader
+    - 是sun.misc.Lancher的内部类
+    - 都继承自URLClassLoader
+    - ExtClassLoader
+      - 没有重写父类的loadClass
+    - AppClassLoader
+      - 重写了父类的loadClass 但是最后还是调用了父加载器的loadClass方法
 - 类加载器之间的关系
-    - 启动类加载器（BootStrap） C++实现 没有父加载器
-    - ExtClassLoader 拓展类加载器 Java实现 父加载器为null
-    - AppClassLoader 系统类加载器 Java实现 父加载器为ExtClassLoader
-    - 自定义类加载器 父加载器为AppClassLoader
+  - 启动类加载器（BootStrap） C++实现 没有父加载器
+  - ExtClassLoader 拓展类加载器 Java实现 父加载器为null
+  - AppClassLoader 系统类加载器 Java实现 父加载器为ExtClassLoader
+  - 自定义类加载器 父加载器为AppClassLoader
 - 类与类加载器
-    - Class对象相同的条件 名字一样（包括包名）
-    - 类加载器一样
-    - 不同的类加载器加载出来的Class对象会在不同的独立的命名空间中
-        - 前提是重写loadClass方法
-        - 由于loadClass的实现中 会先从缓存中查找 所以需要绕过这个才能重新加载
-        - 或者直接调用findClass方法来绕过缓存查找
+  - Class对象相同的条件 名字一样（包括包名）
+  - 类加载器一样
+  - 不同的类加载器加载出来的Class对象会在不同的独立的命名空间中
+    - 前提是重写loadClass方法
+    - 由于loadClass的实现中 会先从缓存中查找 所以需要绕过这个才能重新加载
+    - 或者直接调用findClass方法来绕过缓存查找
 - 显示加载和隐式
-    - 显示加载
-        - 在代码中通过ClassLoader加载
-    - 隐式加载
-        - 不直接在代码中调用 而是通过JVM自动加载到内存中
+  - 显示加载
+    - 在代码中通过ClassLoader加载
+  - 隐式加载
+    - 不直接在代码中调用 而是通过JVM自动加载到内存中
 - 自定义类加载器
-    - 意义
-        - class文件不在ClassPath路径中 默认的类加载器无法找到该类文件
-        - 当一个文件是通过网络等方式传输且可能有加密操作时 需要先解密再加载到JVM中
-        - 热部署
-    - 自定义ClassLoader
-        - 继承URLClassLoader就行
+  - 意义
+    - class文件不在ClassPath路径中 默认的类加载器无法找到该类文件
+    - 当一个文件是通过网络等方式传输且可能有加密操作时 需要先解密再加载到JVM中
     - 热部署
-        - 通过不同的ClassLoader的findClass方法来绕过缓存检查
-    - 线程上下文类加载器
-        - 通过Thread.getContextClassLoader()方法获得
-        - 通过Thread.setContextClassLoader()方法设置
-        - 默认为父线程的ClassLoader
-        - 初始线程的类加载器是AppClassLoader
-        - 应用
-            - 在DriverManage中需要加载Connection的实现类 但是Bootstrap无法加载位于classpath的类 就委托给上下文类加载器来加载
+  - 自定义ClassLoader
+    - 继承URLClassLoader就行
+  - 热部署
+    - 通过不同的ClassLoader的findClass方法来绕过缓存检查
+  - 线程上下文类加载器
+    - 通过Thread.getContextClassLoader()方法获得
+    - 通过Thread.setContextClassLoader()方法设置
+    - 默认为父线程的ClassLoader
+    - 初始线程的类加载器是AppClassLoader
+    - 应用
+      - 在DriverManage中需要加载Connection的实现类 但是Bootstrap无法加载位于classpath的类 就委托给上下文类加载器来加载
 ## JVM内存为什么要分成新生代，老年代，持久代。新生代中为什么要分为Eden和Survivor。
 - 新生代
-    - Eden 新创建的对象会在这里（如果太大了去老年代） Eden内存不足触发一次GC
-    - ServivorTo 保留一次GC中的幸存者
-    - ServivorFrom 上一次GC代幸存者 作为这一次GC代被扫描者
-    - MinorGC
-        - 作用于新生代的GC算法
-        1. 把Eden和ServivorFrom中的存活者复制到ServivorTo
-        2. 把这些的年龄赋值为1（如果ServivorTo不够了 复制到老年代）
-        3. 清空Eden和ServivorFrom
-        4. 把ServivorTo复制到ServivorFrom 准备下一次GC
+  - Eden 新创建的对象会在这里（如果太大了去老年代） Eden内存不足触发一次GC
+  - ServivorTo 保留一次GC中的幸存者
+  - ServivorFrom 上一次GC代幸存者 作为这一次GC代被扫描者
+  - MinorGC
+    - 作用于新生代的GC算法
+    1. 把Eden和ServivorFrom中的存活者复制到ServivorTo
+    2. 把这些的年龄赋值为1（如果ServivorTo不够了 复制到老年代）
+    3. 清空Eden和ServivorFrom
+    4. 把ServivorTo复制到ServivorFrom 准备下一次GC
 - 老年代
-    - MajorGC
-        - 在进行之前 一般先进行一次MinorGC
-        - 如果从新生代放入老年代没有空间时会提前触发
-        - 可能会产生内存碎片 需要进行合并
-        - 如果老年代也装不下了 那么就OOM了
-        1. 扫描一次老年代 标记存活
-        2. 回收没有标记的
+  - MajorGC
+    - 在进行之前 一般先进行一次MinorGC
+    - 如果从新生代放入老年代没有空间时会提前触发
+    - 可能会产生内存碎片 需要进行合并
+    - 如果老年代也装不下了 那么就OOM了
+    1. 扫描一次老年代 标记存活
+    2. 回收没有标记的
 - 持久代
-    - 永久保存的区域
-    - 主要是Class和Mate
-    - GC在程序运行时永远不会扫描永久代
-    - 如果加载的Class过多会OOM
-    - Java8取消了永久代 取而代之的是元数据区（元空间）
+  - 永久保存的区域
+  - 主要是Class和Mate
+  - GC在程序运行时永远不会扫描永久代
+  - 如果加载的Class过多会OOM
+  - Java8取消了永久代 取而代之的是元数据区（元空间）
 - 元数据区
-    - 不存在JVM 在内存
-    - 加载类不再由JVM内存大小限制
+  - 不存在JVM 在内存
+  - 加载类不再由JVM内存大小限制
 ## JVM 出现 fullGC 很频繁，怎么去线上排查问题？
 - full GC的原因
-    - System.gc();
-        - 建议执行full GC 但是不会立即执行
-    - 执行jmap -histo:live pid
-        - 会立即执行
-    - 执行minor GC时的检查
-        - 检查新生代的大小是否小于老年代的连续空间大小
-            - 是 执行minor GC
-            - 否 检查是否开启空间分配担保机制
-                - 否 执行full GC
-                - 是 检查历次minor GC晋升到老年代的大小是否小于老年代的连续空间
-                    - 是 执行minor GC 如果失败执行full GC
-                    - 否 执行full GC
-    - 使用大对象 直接进入老年代 而老年代没有足够的连续空间
+  - System.gc();
+    - 建议执行full GC 但是不会立即执行
+  - 执行jmap -histo:live pid
+    - 会立即执行
+  - 执行minor GC时的检查
+    - 检查新生代的大小是否小于老年代的连续空间大小
+      - 是 执行minor GC
+      - 否 检查是否开启空间分配担保机制
+        - 否 执行full GC
+        - 是 检查历次minor GC晋升到老年代的大小是否小于老年代的连续空间
+          - 是 执行minor GC 如果失败执行full GC
+          - 否 执行full GC
+  - 使用大对象 直接进入老年代 而老年代没有足够的连续空间
 - 如何观察full GC 开启 -XX:+HeapDumpBeforeFullGC
 - dump文件分析
 ## JVM中一次完整的GC流程是怎样的，对象如何晋升到老年代，说说你知道的几种主要的JVM参数。
@@ -266,34 +266,34 @@ int b = 10;     // 2
 int c = a + b;  // 3
 ```
 - 重排序
-    - 在不影响运行结果的情况下 允许对指令重排
-    - as-if-serial原则
-        - 在单线程的场景下 无论如何排序 都不会影响最终结果
-        - 如果不存在数据依赖 允许重排序
-        - 依赖关系
-            - 3 依赖于 1
-            - 3 依赖于 2
-            - 1 2 之间互不依赖
-        - 所以以上代码的执行顺序可以为123或213
-    - 在单线程下 观测到的结果永远和顺序执行相同 所以程序员不会察觉到重排序
+  - 在不影响运行结果的情况下 允许对指令重排
+  - as-if-serial原则
+    - 在单线程的场景下 无论如何排序 都不会影响最终结果
+    - 如果不存在数据依赖 允许重排序
+    - 依赖关系
+      - 3 依赖于 1
+      - 3 依赖于 2
+      - 1 2 之间互不依赖
+    - 所以以上代码的执行顺序可以为123或213
+  - 在单线程下 观测到的结果永远和顺序执行相同 所以程序员不会察觉到重排序
 - 内存屏障
   - 完全内存屏障 早于屏障的读取操作的结果提交到内存后再执行晚于屏障的读写操作
   - 内存读屏障 仅保证了读操作
   - 内存写屏障 仅保证了写操作
 - happen-before
-    - 从Java1.5开始用于阐述多线程之间内存可见性的问题
-    - 定义
-      - 如果第一个操作happen-before第二个操作 那么第一个操作的结果对于第二个是可见的 第一个操作发生在第二个操作之前
-      - 在运行时不一定会严格按照happen-before的顺序 如果重排序之后的结果和happen-before的结果一样 那么这种重排序就是合法的
-    - 原则
-      - 程序次序规则
-      - 锁定规则
-      - volatile变量规则
-      - 传递规则
-      - 线程启动规则
-      - 线程中断规则
-      - 线程终结规则
-      - 对象终结规则
+  - 从Java1.5开始用于阐述多线程之间内存可见性的问题
+  - 定义
+    - 如果第一个操作happen-before第二个操作 那么第一个操作的结果对于第二个是可见的 第一个操作发生在第二个操作之前
+    - 在运行时不一定会严格按照happen-before的顺序 如果重排序之后的结果和happen-before的结果一样 那么这种重排序就是合法的
+  - 原则
+    - 程序次序规则
+    - 锁定规则
+    - volatile变量规则
+    - 传递规则
+    - 线程启动规则
+    - 线程中断规则
+    - 线程终结规则
+    - 对象终结规则
 - Java内存模型
   - 目标 定义程序中各个变量的访问规则
   - 主内存
@@ -558,8 +558,37 @@ Escape Analysis
   - 老年代<=70%
   - GC平均停顿时间<=1s
   - full GC次数为0或者平均停顿间隔>=24h
+- 参数
+  - 不稳定参数
+    - 以-XX开头的参数 由于它们的变化会大大影响JVM性能 所以被称为不稳定参数
+    - 布尔型参数
+      - -XX:+ 表示开启
+      - -XX:- 表示关闭
+    - 数字类型参数
+      - -XX:= 给定一个数字类型值 可以跟单位k/K/m/M/g/G都是可以的
+    - 字符串型参数
+      - -XX:= 给定一个字符串型参数 通常指定文件 路径 一系列命令列表
+  - 具体参数
+    - -Xmx4g 最大堆内存4g
+    - -Xms4g 堆初始化大小4g
+    - -Xmn1200m 年轻代的大小
+      - 年轻代过大会挤压老年代 官方的建议是年轻代占总堆内存堆3/8
+    - -Xss512k 每条线程的堆栈大小
+      - JDK5.0后默认是1M 之前是256K
+      - 在相同的物理内存下设置的越小可以的线程越多
+      - 但是操作系统对线程是有限制的 一般是3000～5000
+    - -XX:NewRatio=4 年轻代和老年代的比值 4表示1:4 年轻代占总的1/5
+    - -XX:SurvivorRatio=8 Eden和Servivor的比值 8表示1:8（这里是一个Servivor的比值 年轻代有两个Servivor）
+    - -XX:MaxTenuringThreshold=15 放入老年代的最大年龄
+      - 如果是0 在老年代比较多的系统中比较适用
+      - 如果设置的比较大 那么会在Servivor中频繁复制 但是可以增加在年轻代回收的概率
 ## 淘宝热门商品信息在JVM哪个内存区域
 ## 字节码的编译过程
+- javac 前端编译器
+  - 词法 语法分许
+    - 词法分析 将字符流转化为标记（Token）集合
+      - Token 标记 在语言中一个不可拆分的字符串 如int 变量名等
+    - 语法分析 通过词法分析得到的Token集合构造抽象语法树
 ## Java需要开发人员回收内存垃圾吗？
 ## Java中垃圾回收有什么目的？什么时候进行垃圾回收？
 ## System.gc()和Runtime.gc()会做什么事情？
