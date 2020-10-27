@@ -98,7 +98,15 @@ for (int i = 0; i < arrayList3.size(); i++) {
 
 
 ## int和Integer 有什么区别，还有Integer缓存的实现
-    int是基础类型 Integer是包装类型
+- int是基础类型 Integer是包装类型
+- Integer缓存实现
+  - 可以通过外部配置设置缓存值最大值（默认127）
+  - 最小值无法通过外部设置配置 为-128
+  - 通过静态内部类IntegerCache实现
+    - 因为Java的类加载机制 静态类只有在使用到的时候才会被加载 所以在没有调用到这个类的时候是不会加载的 相当于一种懒加载
+  - IntegerCache的静态代码块初始化 将整个池都初始化好
+  - 在通过valueOf方法获取Integer实例时会先从缓存中寻找 如果存在对应值 返回 不存在则创建
+  - valueOf也是自动装箱时实际调用的方法
 ## 说说反射的用途及实现原理，Java获取反射的三种方法
 - 反射提供以下功能
     - 在运行时判断一个对象所属的类
@@ -116,7 +124,7 @@ for (int i = 0; i < arrayList3.size(); i++) {
     - 判断是否为某个类的实例
     - 创建实例
         - 区别于传统的new 先需要通过Class实例获取构造器来获取对象
-        - Class<Test> clazz = Test.getName(); // 获取Class实例
+        - Class<Test> clazz = Test.class; // 获取Class实例
         - Constructor con = clazz.getConstructor(形参.class); // 获取构造器实例
         - Test test = con.newInstance(参数); // 获取实例
     - 获取方法
