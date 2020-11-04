@@ -58,17 +58,47 @@
 15. 调用Bean的destory-method
 ## Spring MVC 的工作原理？
 - 一次请求的过程
-  1. 请求发送到DispatcherServlet
-  2. DispatcherServlet将请求发送到HandlerMapping
-  3. HandlerMapping找到相应到处理器（可以通过XML或者注解配置） 生成处理器以及拦截器返回给DispatcherServlet
-  4. 
+  1. 请求到达DispatcherServlet
+  2. DispatcherServlet请求HandlerMapping
+  3. HandlerMapping根据配置找到最终执行的Handler
+  4. 返回最终的Handler给DispatcherServlet
+  5. DispacherServlet请求HandlerAdatper执行Handler
+  6. HandlerAdatper根据不同类型的请求执行对应的Handler
+  7. Handler返回ModelAndView给HandlerAdatper
+  8. HandlerAdapter返回ModelAndView给DispatcherServlet
+  9. DispatcherServlet将ModelAndView交给ViewResolver
+  10. ViewResolver将ModelAndView处理成View返回给DispatcherServlet
+  11. Dispatcher将model数据渲染到View中
+  12. 返回给用户
 - 主要组件
   - DispatcherServlet 前端控制器
-  - HandlerMapping
-  - HandlAdapter
-  - ViewResolver
+  - HandlerMapping 处理器映射器
+  - HandlAdapter 处理器适配器
+  - Handler 处理器 需要自己开发
+  - ViewResolver 视图解析器
+  - View 视图 接口支持不同类型的视图 这里需要自己写JSP
 ## Spring 循环注入的原理？
-Spring 中用到了那些设计模式？
+- 三种循环注入的情况
+  - 构造器循环依赖
+  - 单例模式下setter循环依赖
+  - 非单例模式循环依赖
+- 以上三种中只有第二种可以通过三级缓存来处理
+- 单例对象的初始化过程
+  1. 调用构造函数实例化对象
+  2. 填充属性
+  3. 调用init-method
+- 在第二步出现的循环注入可以通过三级缓存解决
+- 三级缓存
+  1. 一级 singletonObjects 完成初始化的对象
+  2. 二级 earlySingletonObjects 完成实例化但是尚未初始化的提前曝光的对象
+  3. 三级 singletonFactories 进入实例化阶段的单例对象工程
+- 如果A依赖于B B依赖于A
+  - 尝试获取A
+  - 获取无结果 A实例化（从三级获取） 放入二级 由于依赖于B 尝试获取B
+  - 获取无结果 B实例化（从三级获取） 放入二级 由于依赖于A 尝试获取A
+  - 当前只获取到了A的时候或对象 则将之注入到B中 B初始化完成 放入一级 并从二级移除
+  - 将B注入到A A初始化完成 放入一级 并从二级移除
+## Spring 中用到了那些设计模式？
 Spring AOP的理解，各个术语，他们是怎么相互工作的？
 Spring框架中的单例bean是线程安全的吗?
 Spring @ Resource和Autowired有什么区别？
