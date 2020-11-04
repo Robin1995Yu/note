@@ -543,7 +543,8 @@ for (int i = 0; i < arrayList3.size(); i++) {
 ## 访问修饰符public,private,protected,以及default的区别？
 - public 公共的 任何地方都可以访问
 - private 私有的 只有类内部的方法和内部类可以访问
-- protected
+- protected 受保护的 类内部 包内部 子类可以访问
+- default 默认 啥都不输入 只能在类内部和包内部访问
 
 ## 谈谈final在java中的作用？
 - 类 不可继承
@@ -569,8 +570,24 @@ for (int i = 0; i < arrayList3.size(); i++) {
     
 ## 什么是序列化，怎么序列化，反序列呢？
 ## java8的新特性。
+- Lambda表达式
+  - 用更简单的方式写匿名的接口实现类（前提是只有一个方法的函数式接口）
+- 方法引用
+- 默认方法
+  - 在接口中用define和static开头书写public和public static方法
+- Stream
+  - 通过Collection.stream方法获取Stream
+  - map 将Stream中的元素替换
+  - filter 筛选
+  - limit 限制流的长度
+  - sorted 排序 如果无参按照自然顺序 如果传入Comparter 按照比较器的结果排序
+    - 要使用无参的 泛型必须实现Comparable接口
+- Date Time
+- Optional类
 ## 匿名内部类是什么？如何访问在其外面定义的变量呢？
 ## break和continue有什么区别？
+- break 退出当前循环
+- continue 直接开始下次循环
 ## String s = "Hello";s = s + " world!";这两行代码执行后，原始的 String 对象中的内容是否会改变？
     不会 String是不可变类
 ## 怎样将GB2312编码的字符串转换为ISO-8859-1编码的字符串？

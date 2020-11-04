@@ -57,7 +57,17 @@
 14. 调用DisposableBean.destory
 15. 调用Bean的destory-method
 ## Spring MVC 的工作原理？
-Spring 循环注入的原理？
+- 一次请求的过程
+  1. 请求发送到DispatcherServlet
+  2. DispatcherServlet将请求发送到HandlerMapping
+  3. HandlerMapping找到相应到处理器（可以通过XML或者注解配置） 生成处理器以及拦截器返回给DispatcherServlet
+  4. 
+- 主要组件
+  - DispatcherServlet 前端控制器
+  - HandlerMapping
+  - HandlAdapter
+  - ViewResolver
+## Spring 循环注入的原理？
 Spring 中用到了那些设计模式？
 Spring AOP的理解，各个术语，他们是怎么相互工作的？
 Spring框架中的单例bean是线程安全的吗?
