@@ -99,8 +99,40 @@
   - 当前只获取到了A的时候或对象 则将之注入到B中 B初始化完成 放入一级 并从二级移除
   - 将B注入到A A初始化完成 放入一级 并从二级移除
 ## Spring 中用到了那些设计模式？
-Spring AOP的理解，各个术语，他们是怎么相互工作的？
-Spring框架中的单例bean是线程安全的吗?
+- 工厂模式
+  - BeanFactory
+    - 延迟加载 只有在使用的时候才会加载
+  - ApplicationContext
+    - 在启动的时候将所有的bean加载完成
+    - ClassPathXmlApplication 将上下文作为资源路径
+    - FileSystemXmlApplication 从文件系统中的XML作为资源
+    - XmlWebApplicationContext 从web系统中的XML作为资源
+- 单例模式
+  - 好处
+    - 减少new的开销
+    - 减少GC的开销
+  - Spring中的bean默认都是单例的
+  - 通过缓存实现 如果缓存没有 创建并放入缓存 如果有 直接得到缓存中的数据
+- 代理模式
+  - 主要在AOP中使用
+  - 代理的实现
+    - 如果实现接口 使用JDK proxy 
+    - 如果没有 使用Cglib
+    - 也可以使用AspectJ
+      - 通过操作字节码来实现AOP
+      - 如果切面很多 那么使用这个 速度比Spring AOP要快 但是也要复杂
+- 模版模式
+- 观察者模式
+- 适配器模式
+- 装饰者模式
+## Spring AOP的理解，各个术语，他们是怎么相互工作的？
+- 概念
+  - 切面（Aspect） 用@Aspect注解 或者\<aop:aspect\>标签
+  - 连接点（Join Point） 可以采取发送通知的地方
+  - 通知（Advice）在某个连接点时采取的操作
+  - 切入点（Pointcut） 表示一组连接点与通知 切入点表达式 默认使用Aspect切入点表达式
+  - 
+## Spring框架中的单例bean是线程安全的吗?
 Spring @ Resource和Autowired有什么区别？
 Spring 的不同事务传播行为有哪些，有什么作用？
 Spring Bean 的加载过程是怎样的？

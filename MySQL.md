@@ -219,3 +219,81 @@
 - 适合场景
   - 频繁读适合乐观锁
   - 频繁写适合悲观锁
+## 视图
+为了提高复杂sql的复用性和安全性 本质是一种虚拟表
+## 视图的特点
+- 数据可以来自不同的表
+- 是由基本表产生的
+- 视图的建立和删除不影响基础表
+- 对视图的修改会影响到基本表
+- 当视图来自多个基本表时不影响修改
+## 视图的使用场景
+- 查询简单化
+- 数据安全性
+- 逻辑数据独立性
+## 视图的缺点
+- 性能 如果视图是一个复杂的查询 那么对视图的简单查询也会很消耗性能
+- 修改限制
+## 游标
+
+
+
+## 日志
+- MySQL中的日志
+  - redo log
+    - 用于事务提交 但是脏页还没有持久化时用于在数据库重启时恢复
+    - 物理格式的日志 按照顺序在事务执行的过程中就写入了
+    - 在事务持久化之后就会被释放（会被别的redo log覆盖）
+  - undo log
+  - bin log
+  - 以下为与事务回滚无关的日志
+    - error log
+    - slow query log
+    - general log
+    - relay log
+- 日志的作用
+  - 用于保证事务失败时的回滚和事务成功后脏页未持久化的恢复
+- undo log
+  - 将还没有COMMIT的事务回滚到事务开始的状态
+  - 在系统奔溃时 可能还有没有COMMIT的事务 在系统恢复时 需要借助undo log恢复
+  - 要求
+    - 必须要记录(T, x, v) T为事务 x为修改的数据 v为修改前的数据
+    - 必须要在事务的修改都持久化之后才能写COMMIT T日志 这样能保证在宕机恢复时所有已经持久化的数据不需要回滚
+  - 记录顺序
+    1. START T
+    2. 记录事务以及修改数据的旧值
+    3. 将事务的修改更新
+    4. 记录COMMIT T
+  - 回滚过程
+    1. 扫描日志 找到所有已经START T但是尚未COMMIT T的日志
+    2. 针对这些事务 根据undo log回滚
+  - 日志的优化 checkpoint
+    - 用于加快回滚的速度
+      1. 记录checkpoint_start(T1, T2, ...) 这些事务是当前checkpoint记录时START但是尚未COMMIT的事务
+      2. 等待这些事务全部COMMIT
+      3. 记录checkpoint_end
+    - 回滚过程
+      - 从后往前扫描日志
+        - 如果先遇到checkpoint_start 将其之后所有未提交的事务都回滚
+        - 如果先遇到checkpoint_end 将前一个checkpoint_start之后的所有未提交的事务回滚（因为在前一个checkpoint_start后会有很多START和COMMIT）
+      - 这样的好处是不用扫描整个undo log
+    - 使用undo log会要求所有COMMIT之前数据都是持久化的 这样很浪费性能
+- redo log
+  - 回放日志的适合将已经COMMIT的日志重做一遍 没有COMMIT的日志abort处理
+  - 写COMMIT T日志之前 事务的修改不能进行持久化 否则恢复时 对于未COMMIT的操作 可能有数据已经修改 但重放redo log不会对该事务做任何处理 从而不能保证事务的原子性
+  - 记录过程
+    1. START T
+    2. (T, x, v)
+    3. COMMIT T
+    4. 将事务修改持久化
+  - 回滚过程
+    1. 找到所有已经COMMIT的事务
+    2. 根据redo log重做
+  - 同样通过checkpoint优化
+    1. 记录checkpoint_start(T1, T2, ...)
+    2. 将所有已提交的事务持久化
+    3. 记录checkpoint_end
+  - 回滚过程
+    - 从后向前扫描
+      - 如果先遇到start 把T1～Tn和在其之后所有已经commit的日志重做
+      - 如果先遇到end 把T1～Tn以及前一个start之后的commit重做
