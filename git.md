@@ -4,7 +4,7 @@
 ## git仓库创建
 - git init 将当前的目录作为一个git仓库
 ## 文件上传
-- git add <file-name...> 将文件提交
+- git add (file-name...) 将文件提交
 - git commit -m "log" 将修改提交
 ## 版本管理
 - git status 查看当前库的状态
@@ -40,20 +40,20 @@
     - HEAD指针
       - 指向当前工作区某个分支的节点的指针
 ## 修改撤销
-- git checkout -- <file-name> 将暂存区或者分支中的指定文件替换当前文件
+- git checkout -- (file-name) 将暂存区或者分支中的指定文件替换当前文件
   - 回到最近一次add或者commit的状态
-- git reset HEAD <file-name> 将分支中的指定文件替换当前文件
+- git reset HEAD (file-name) 将分支中的指定文件替换当前文件
   - 回到最近一次commit的状态
 ## 删除文件
-- git rm <file name> 将文件从git库中删除
+- git rm (file name) 将文件从git库中删除
 - 需要提交
 ## 远程仓库
-- git remote add <远程仓库名> <ssh-path>
+- git remote add (远程仓库名) (ssh-path)
   - 远程仓库名为本地的名字 一般命名为origin
-- git push -u <远程仓库名> master
+- git push -u (远程仓库名) master
   - 参数-u 将本地的master分支和远程的master分支关联
   - 在一次之后就可以省去这个参数
-- git clone <ssh-path>
+- git clone (ssh-path)
   - 从git远程仓库克隆
 - git同样可以通过http协议 但是ssh协议是最快的
 ## 分支管理
@@ -68,16 +68,16 @@
         - 查看当前所有的分支
         - 当前操作的分支前会标有*
         - -d 删除分支
-      - git branch <分支名>
+      - git branch (分支名)
         - 创建一个新的分支
-      - git switch <分支名>
+      - git switch (分支名)
         - 切换到分支
         - -c 创建分支并切换）
     - 新的分支都是从已有的分支上创建的
     - 新创建分支相当于创建一个指针 指向当前分支的提交
   - 分支的合并
     - 命令
-      - git merge <分支名>
+      - git merge (分支名)
         - 将分支合并到当前分支
     - 将一条分支的指针指向另一条分支的指针
 ## 冲突解决
@@ -87,11 +87,11 @@
 ```
 *************************
 *                       *
-*   <<<<<<<HEAD         *
+*   (((((((HEAD         *
 *   text in HEAD        *
 *   =======             *
 *   text in branch      *
-*   >>>>>>>branch name  *
+*   )))))))branch name  *
 *                       *
 *************************
 ```
@@ -102,7 +102,7 @@
   - 速度较快
   - 在删除分支之后 会丢失分支信息
   - 在冲突的时候无法使用这种模式
-- git --no--ff <分支名> 禁用Fast forward提交
+- git --no--ff (分支名) 禁用Fast forward提交
   - 通过新建一个commit提交分支
   - 需要和commit时一样的参数
 - 分支策略
@@ -126,7 +126,7 @@
   - git stash pop 恢复现场并删除
   - 后三个命令可以指明是哪个现场
 - 将一次提交作用在当前分支
-  - git cherry-pich <commit-id>
+  - git cherry-pich (commit-id)
 ## Feature分支
 - 命名规则 feature-model_name
 - 为了不在开发新功能到时候的代码污染主分支而产生的分支
@@ -143,14 +143,14 @@
   - 通过git remote查看当前关联的远程仓库
     - 加上-v参数显示详细信息
   - 推送到远程仓库实际上是把本地的分支推送到对应的远程仓库
-    - git push <仓库名> <分支名>
+    - git push (仓库名) (分支名)
   - 分支是否需要推送
     - master 需要时刻和远程同步
     - dev 所有成员都在这个分支上工作 需要时刻同步
     - BUG分支 用于本地修复bug 不需要推送到远程仓库
     - feature分支 取决与是否有同事一起开发这个功能
 - 抓取分支
-  - git clone <ssh-path>
+  - git clone (ssh-path)
     - 从仓库克隆
     - 默认只能看到master分支
   - git checkout -b dev orgin/dev
@@ -163,28 +163,28 @@
     2. 处理冲突
     3. 重新将分支提交
     - 如果提示git pull时提示当前分支没有和远程分支建立链接关系
-      - git branch --set-upstream-to <branch-name> origin/<branch-name>
+      - git branch --set-upstream-to (branch-name) origin/(branch-name)
 ## 标签
 - 什么是标签
   - 和commit绑定的
   - 为了给commit一个更加友好的名称
 - 创建标签
-  - git tag <tag-name>
+  - git tag (tag-name)
   - 参数-a 指定标签名（可省略）
   - 参数-m 指定说明文字
 - 查看标签列表
   - git tag
 - 打标签
   - 默认是打在最近一次提交
-  - git tag <tag-name> <commit-id> 将标签打在指定的commit上
+  - git tag (tag-name) (commit-id) 将标签打在指定的commit上
 - 查看标签
-  - git show <tag-name> 显示标签对应的commit的具体信息
+  - git show (tag-name) 显示标签对应的commit的具体信息
 - 标签删除
-  - git tag -d<tag-name>
+  - git tag -d(tag-name)
 - 推送标签到远程仓库
-  - git push origin <tag-name> 推送指定标签
+  - git push origin (tag-name) 推送指定标签
   - git push origin --tag 推送所有标签
-  - git push origin :refs/tags/<tag-name> 删除远程仓库的标签
+  - git push origin :refs/tags/(tag-name) 删除远程仓库的标签
 ## 自定义git
 - 所有的配置都在.git/config文件中 可以手动修改
 - 用户配置（针对这台机器上的所有仓库）的配置放在用户文件夹下的.gitconfig下
@@ -196,11 +196,11 @@
     - 忽略编译生成的文件 如.class文件
     - 忽略敏感文件 如包含数据库信息的配置文件
     - 通过git add -f强制提交忽略的文件
-    - 通过git check-ignore -v <file-name>检查哪里忽略了这个文件
+    - 通过git check-ignore -v (file-name)检查哪里忽略了这个文件
   - 忽略文件的语法
     - 一行写一类忽略
     - \* 替代任意长度的文字
-    - !<file-name>特殊情况
+    - !(file-name)特殊情况
 ## 配置别名
 - 给命令配置别名
-  - git config --global alias.<alias-name> <command>
+  - git config --global alias.(alias-name) (command)
