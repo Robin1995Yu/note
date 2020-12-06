@@ -39,3 +39,37 @@
     - App完成整个逻辑的串联
   - 核心类
     - DefaultListableBeanFactory
+## 结构组成
+### beans
+- 两大核心类
+  - DefaultListableBeanFactory
+    - XmlBeanFactory的父类 它和父类的不同是它在内部使用了XmlBeanDefinitionReader 实现了个性化的BeanDefinitionReader读取
+    - 整个bean加载过程的核心部分 是Spring注册和加载bean的默认实现
+    - 父类
+      - AbstractAutowireCapableBeanFactory
+    - 接口
+      - BeanDefinitionRegistry
+      - ConfigurableListableBeanFactory
+  - XmlBeanDefinitionReader
+    - XML配置文件读取是Spring中很重要的一部分 因为Spring的大部分配置都是通过XML文件为切入点的
+    - 与其父类DefaultListableBeanFactory不同 它包含了自定义的XmlBeanDefinitionReader
+      - XmlBeanDefinitionReader的过程
+        1. 通过继承AbstractBeanDefinitionReader中的方法，使用ResourLoader将资源文件路径转化为对应的Resource文件
+        2. 通过DocumentLoader对Resource文件进行转换，Resource->Document
+        3. 通过DefaultBeanDefinitionDocumentReader对Document解析
+        4. 通过BeanDefinitionParserDelegate对Element解析
+- Resource接口
+  - 将Spring中的资源抽象
+    - File
+    - URL
+    - Classpath
+    - 等
+  - 提供了存在性 可读性 是否打开状态和对于转换到不同类型等方法
+  - 实现
+    - FileSystemResource
+    - ClassPathResource
+    - UrlResource
+    - InputStreamResource
+    - ByteArrayResource
+    - 等
+  - 将Resource转换成InputStream 交给XmlBeanDefinitionReader处理
