@@ -30,7 +30,7 @@
 - 服务版本
 ## Dubbo的结构
 在Dubbo中 也有类似于互联网的分层结构 每一层依赖于其下一层的实现来完成自己的功能 并为上一层提供服务 每一层都可以使用别的实现 更换实现也不会影响到别的层的功能
-![avatar](Dubbo整体架构.png)
+![avatar](Dubbo整体架构.jpeg)
 - 分层实现
   - Service和Config层
     - 是Dubbo的API层
