@@ -30,13 +30,8 @@
 - 服务版本
 ## Dubbo的结构
 在Dubbo中 也有类似于互联网的分层结构 每一层依赖于其下一层的实现来完成自己的功能 并为上一层提供服务 每一层都可以使用别的实现 更换实现也不会影响到别的层的功能
-<<<<<<< HEAD
-
 用户可以通过自己实现Dubbo提供的接口来替换原有的实现（书本中只有通过Spring实现的方式 以我的经验 在Springboot中估计是通过添加Bean和在配置文件中加入来实现的）
 ![avatar](Dubbo整体架构.png)
-=======
-![avatar](Dubbo整体架构.png)
->>>>>>> d69c1f5189838dd557c5ef55d23699466fc55f87
 - 分层实现
   - Service和Config层
     - 是Dubbo的API层
@@ -46,7 +41,6 @@
     - 下面个层都是组件化的 可以被替换
 - 具体各层
   - Service
-<<<<<<< HEAD
     - SDK的接口
     - Provider的实现类
   - Config
@@ -61,17 +55,6 @@
       - JdkProxyFactory
     - Provider是Invoker
     - Consumer是Proxy
-=======
-    - 接口和实现类
-    - 接口由SDK提供
-    - 实现类由Provider提供
-  - Config
-    - 服务启动器
-    - Consumer的ReferenceConfig
-    - Provider的ServiceConfig
-  - Proxy
-    - 服务代理层
->>>>>>> d69c1f5189838dd557c5ef55d23699466fc55f87
   - Registry
     - 注册中心
     - SPI为RegistryFactory
