@@ -31,7 +31,7 @@
 ## Dubbo的结构
 在Dubbo中 也有类似于互联网的分层结构 每一层依赖于其下一层的实现来完成自己的功能 并为上一层提供服务 每一层都可以使用别的实现 更换实现也不会影响到别的层的功能
 用户可以通过自己实现Dubbo提供的接口来替换原有的实现（书本中只有通过Spring实现的方式 以我的经验 在Springboot中估计是通过添加Bean和在配置文件中加入来实现的）
-![avatar](Dubbo整体架构.png)
+![avatar](pic/Dubbo整体架构.png)
 - 分层实现
   - Service和Config层
     - 是Dubbo的API层
